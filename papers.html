@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mathematics 0580 past papers — Paperwise Egypt</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 34'%3E%3Cpath d='M20 3 L37 31 H3 Z' fill='%23D4A63A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="papers">
+<header id="site-head"></header>
+
+<section class="banner"><div class="wrap">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / Cambridge IGCSE / Mathematics 0580</nav>
+<h1>Mathematics <span class="code" style="font-size:16px;vertical-align:middle;background:var(--gold);color:var(--ink)">0580</span> <span lang="ar" dir="rtl" style="font-size:24px;color:var(--gold)">الرياضيات</span></h1>
+<p>Past papers, mark schemes, examiner reports and grade thresholds. Core papers are 1 and 3; Extended papers are 2 and 4.</p>
+<div class="chips"><a class="chip" href="classified.html">Classified by topic</a><a class="chip" href="quiz.html">1-hour quiz</a><a class="chip" href="practice.html">Practice mode</a></div>
+</div></section>
+
+<div class="wrap split">
+<aside class="side card" aria-label="Filters" style="display:flex;flex-direction:column;gap:22px">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:18px">Filters</h2><button class="btn" id="reset" style="background:none;color:var(--terra);padding:0 8px">Reset</button></div>
+<div class="field"><label for="year">Year</label>
+<select id="year"><option value="all">All years</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option></select></div>
+<fieldset style="border:0;margin:0;padding:0"><legend class="legend" style="margin-bottom:8px">Session</legend><div class="stack" id="sessions"></div></fieldset>
+<fieldset style="border:0;margin:0;padding:0"><legend class="legend" style="margin-bottom:8px">Paper</legend><div class="two" id="papers"></div></fieldset>
+<div class="note"><strong style="color:var(--nile)">Reading file codes</strong><br>0580_s24_qp_42 = May/June 2024, question paper, Paper 4 variant 2. In Egypt you’ll usually sit May/June or Oct/Nov; Feb/March papers are great extra practice.</div>
+</aside>
+
+<main class="main">
+<p class="info" id="soon" hidden></p>
+<p class="info">Each button opens the PDF itself in a new tab: question paper, mark scheme, examiner report or grade thresholds.</p>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px"><p style="margin:0"><strong id="count"></strong> papers found</p><span style="font-size:14px;color:var(--muted)">QP question paper, MS mark scheme, ER examiner report, GT grade thresholds</span></div>
+<div class="tablebox"><table>
+<thead><tr><th scope="col">Paper</th><th scope="col">Session</th><th scope="col">Downloads</th><th scope="col"><span class="sr">Practise</span></th></tr></thead>
+<tbody id="rows"></tbody></table></div>
+<p class="empty" id="empty" hidden>No papers for that combination. Feb/March papers are released for variant 2 only.</p>
+<button class="btn btn-ghost" id="more" style="align-self:center">Show more papers</button>
+</main>
+</div>
+
+<footer id="site-foot"></footer>
+<script src="common.js"></script>
+<script>
+var st = { year: 'all', session: 'all', paper: 'all', limit: 12 };
+var SESS = [['all','All sessions'],['s','May / June'],['w','Oct / Nov'],['m','Feb / March']];
+var PAPS = [['all','All'],['1','P1 Core'],['2','P2 Ext'],['3','P3 Core'],['4','P4 Ext']];
+var SNAME = { m: 'Feb / March', s: 'May / June', w: 'Oct / Nov' };
+var FOLDER = { m: 'March', s: 'May-June', w: 'Oct-Nov' };
+var PNAME = { 1: 'Paper 1 (Core)', 2: 'Paper 2 (Extended)', 3: 'Paper 3 (Core)', 4: 'Paper 4 (Extended)' };
+var ALL = [];
+for (var y = 2025; y >= 2019; y--) {
+  ['w','s','m'].forEach(function (s) {
+    var yy = String(y).slice(2), dir = PDF_BASE + y + '-' + FOLDER[s] + '/0580_' + s + yy;
+    [1,2,3,4].forEach(function (p) {
+      (s === 'm' ? [2] : [1,2,3]).forEach(function (v) {
+        ALL.push({ year: String(y), s: s, p: String(p), title: PNAME[p] + ' — Variant ' + v, session: SNAME[s] + ' ' + y,
+          file: '0580_' + s + yy + '_qp_' + p + v, qp: dir + '_qp_' + p + v + '.pdf', ms: dir + '_ms_' + p + v + '.pdf',
+          er: dir + '_er.pdf', gt: dir + '_gt.pdf' });
+      });
+    });
+  });
+}
+function buttons(el, list, key) {
+  el.innerHTML = list.map(function (o) { return '<button type="button" class="opt" aria-pressed="' + (st[key] === o[0]) + '" data-v="' + o[0] + '">' + o[1] + '</button>'; }).join('');
+}
+function render() {
+  var f = ALL.filter(function (r) { return (st.year === 'all' || r.year === st.year) && (st.session === 'all' || r.s === st.session) && (st.paper === 'all' || r.p === st.paper); });
+  document.getElementById('rows').innerHTML = f.slice(0, st.limit).map(function (r) {
+    var practice = 'practice.html?file=' + encodeURIComponent(r.file) + '&qp=' + encodeURIComponent(r.qp) + '&ms=' + encodeURIComponent(r.ms) + '&er=' + encodeURIComponent(r.er);
+    return '<tr><td><div style="font-weight:700">' + r.title + '</div><div class="file">' + r.file + '</div></td><td>' + r.session + '</td>' +
+      '<td><div class="dl"><a class="qp" target="_blank" rel="noopener" href="' + r.qp + '">QP PDF</a><a class="ms" target="_blank" rel="noopener" href="' + r.ms + '">MS PDF</a>' +
+      '<a class="x" target="_blank" rel="noopener" href="' + r.er + '">ER</a><a class="x" target="_blank" rel="noopener" href="' + r.gt + '">GT</a></div></td>' +
+      '<td style="text-align:right"><a class="btn btn-terra" style="min-height:40px" href="' + practice + '">Practise</a></td></tr>';
+  }).join('');
+  document.getElementById('count').textContent = f.length;
+  document.getElementById('empty').hidden = f.length > 0;
+  document.getElementById('more').hidden = f.length <= st.limit;
+  buttons(document.getElementById('sessions'), SESS, 'session');
+  buttons(document.getElementById('papers'), PAPS, 'paper');
+  document.getElementById('year').value = st.year;
+}
+document.getElementById('sessions').addEventListener('click', function (e) { var v = e.target.getAttribute('data-v'); if (v) { st.session = v; st.limit = 12; render(); } });
+document.getElementById('papers').addEventListener('click', function (e) { var v = e.target.getAttribute('data-v'); if (v) { st.paper = v; st.limit = 12; render(); } });
+document.getElementById('year').addEventListener('change', function (e) { st.year = e.target.value; st.limit = 12; render(); });
+document.getElementById('reset').addEventListener('click', function () { st = { year: 'all', session: 'all', paper: 'all', limit: 12 }; render(); });
+document.getElementById('more').addEventListener('click', function () { st.limit += 12; render(); });
+var soon = new URLSearchParams(location.search).get('soon');
+if (soon) { var s = document.getElementById('soon'); s.hidden = false; s.textContent = 'Papers for ' + soon + ' are coming soon. Mathematics 0580 is shown below for now.'; }
+render();
+</script>
+</body>
+</html>

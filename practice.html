@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice mode — Paperwise Egypt</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 34'%3E%3Cpath d='M20 3 L37 31 H3 Z' fill='%23D4A63A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="practice">
+<header id="site-head"></header>
+
+<section class="banner"><div class="wrap" style="flex-direction:row;flex-wrap:wrap;justify-content:space-between;align-items:center">
+<div><h1 style="font-size:24px">Practice mode</h1><p class="file" id="paper" style="color:#A9BDCE"></p></div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+<div class="timer" id="timer" aria-live="off">2:00:00</div>
+<button class="btn btn-gold" id="toggle">Start exam</button>
+<button class="btn" id="reset" style="background:transparent;color:#E6EEF5;border:1px solid #4F7394">Reset</button>
+</div>
+</div></section>
+
+<div class="wrap split">
+<main class="main">
+<div class="card" style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+<h2 style="margin:0;font-size:20px;color:var(--nile)">Your documents</h2>
+<p style="margin:0;color:var(--muted)">Open the question paper in a new tab and keep this page open — the timer keeps running. The mark scheme unlocks when you pause or finish.</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px">
+<a class="btn btn-nile" id="qp" target="_blank" rel="noopener">Open question paper</a>
+<a class="btn btn-ghost" id="ms" target="_blank" rel="noopener">Open mark scheme</a>
+<a class="btn btn-ghost" id="er" target="_blank" rel="noopener">Open examiner report</a>
+</div>
+<p class="note" id="locked" hidden>Mark scheme is locked while the timer is running — no peeking.</p>
+</div>
+<a class="card feature dark" href="quiz.html"><h3>Warm up with the 1-hour quiz</h3><p>50 auto-marked Mathematics questions.</p></a>
+</main>
+
+<aside class="side" style="display:flex;flex-direction:column;gap:16px">
+<div class="card" style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:18px">Exam settings</h2>
+<div class="field"><label for="duration">Time allowed</label>
+<select id="duration"><option value="45">45 minutes</option><option value="60">1 hour</option><option value="90">1 hour 30 minutes</option><option value="120" selected>2 hours</option><option value="135">2 hours 15 minutes</option><option value="150">2 hours 30 minutes</option></select>
+<span style="font-size:13px;color:var(--muted)">Check the paper’s front cover for the official time.</span></div>
+</div>
+<div class="card" style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:18px">Log your score</h2>
+<div class="two"><div class="field"><label for="marks">Your marks</label><input id="marks" type="number" min="0"></div><div class="field"><label for="total">Out of</label><input id="total" type="number" min="1"></div></div>
+<div style="display:flex;justify-content:space-between;font-size:14px"><span>Percentage</span><strong id="pct">—</strong></div>
+<div class="bar"><div id="pctbar" style="background:var(--terra)"></div></div>
+<button class="btn btn-nile" id="save">Save attempt</button>
+<ul id="history" style="margin:0;padding-left:18px;font-size:14px;color:var(--muted)"></ul>
+</div>
+</aside>
+</div>
+
+<footer id="site-foot"></footer>
+<script src="common.js"></script>
+<script>
+var p = new URLSearchParams(location.search);
+var DEF = PDF_BASE + '2024-May-June/0580_s24_';
+var doc = { file: p.get('file') || '0580_s24_qp_42', qp: p.get('qp') || DEF + 'qp_42.pdf', ms: p.get('ms') || DEF + 'ms_42.pdf', er: p.get('er') || DEF + 'er.pdf' };
+document.getElementById('paper').textContent = doc.file;
+document.getElementById('qp').href = doc.qp;
+document.getElementById('er').href = doc.er;
+var duration = 120, left = 7200, running = false;
+var tEl = document.getElementById('timer'), tog = document.getElementById('toggle'), ms = document.getElementById('ms');
+function draw() {
+  tEl.textContent = Math.floor(left / 3600) + ':' + pad(Math.floor(left % 3600 / 60)) + ':' + pad(left % 60);
+  tEl.classList.toggle('low', left < 600 && left < duration * 60);
+  tog.textContent = running ? 'Pause' : (left < duration * 60 ? 'Resume' : 'Start exam');
+  if (running) { ms.removeAttribute('href'); ms.setAttribute('aria-disabled', 'true'); ms.style.opacity = .5; }
+  else { ms.href = doc.ms; ms.removeAttribute('aria-disabled'); ms.style.opacity = 1; }
+  document.getElementById('locked').hidden = !running;
+}
+setInterval(function () { if (running && left > 0) { left--; if (!left) running = false; draw(); } }, 1000);
+tog.onclick = function () { running = !running; draw(); };
+document.getElementById('reset').onclick = function () { running = false; left = duration * 60; draw(); };
+document.getElementById('duration').onchange = function (e) { duration = +e.target.value; left = duration * 60; running = false; draw(); };
+function pct() {
+  var m = parseFloat(document.getElementById('marks').value), t = parseFloat(document.getElementById('total').value);
+  var v = m >= 0 && t > 0 ? Math.min(100, Math.round(m / t * 100)) : null;
+  document.getElementById('pct').textContent = v === null ? '—' : v + '%';
+  document.getElementById('pctbar').style.width = (v || 0) + '%';
+  return v;
+}
+document.getElementById('marks').oninput = pct; document.getElementById('total').oninput = pct;
+function loadHistory() { try { return JSON.parse(localStorage.getItem('pw-history') || '[]'); } catch (e) { return []; } }
+function showHistory() { document.getElementById('history').innerHTML = loadHistory().slice(-5).reverse().map(function (h) { return '<li>' + h.file + ': ' + h.pct + '% (' + h.date + ')</li>'; }).join(''); }
+document.getElementById('save').onclick = function () {
+  var v = pct(); if (v === null) return;
+  var h = loadHistory(); h.push({ file: doc.file, pct: v, date: new Date().toLocaleDateString() });
+  try { localStorage.setItem('pw-history', JSON.stringify(h)); } catch (e) {}
+  this.textContent = 'Saved ✓'; showHistory();
+};
+showHistory(); draw();
+</script>
+</body>
+</html>

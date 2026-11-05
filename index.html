@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paperwise Egypt — IGCSE past papers</title>
+<meta name="description" content="Free IGCSE past papers, mark schemes, classified questions and a timed quiz for students in Egypt.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 34'%3E%3Cpath d='M20 3 L37 31 H3 Z' fill='%23D4A63A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="home">
+<header id="site-head"></header>
+
+<section class="hero">
+<svg class="scene" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<circle cx="1180" cy="80" r="56" fill="#D4A63A" opacity="0.9"/>
+<path d="M760 260 L1000 40 L1240 260 Z" fill="#14476E"/><path d="M1000 40 L1240 260 L1000 260 Z" fill="#0F3A5C"/>
+<path d="M1060 260 L1220 110 L1380 260 Z" fill="#185583"/><path d="M1220 110 L1380 260 L1220 260 Z" fill="#124568"/>
+<path d="M600 260 L700 168 L800 260 Z" fill="#185583"/>
+<path d="M0 236 C200 222 400 250 720 238 C1000 228 1200 250 1440 236 L1440 260 L0 260 Z" fill="#1F6FA8" opacity="0.6"/>
+</svg>
+<div class="wrap">
+<p class="kicker">For IGCSE students across Egypt</p>
+<h1>Every IGCSE past paper, sorted and ready to practise.</h1>
+<p class="ar-line" lang="ar" dir="rtl" style="text-align:left">كل امتحانات IGCSE السابقة في مكان واحد</p>
+<p class="lead">Question papers, mark schemes and examiner reports by subject, year and session — plus classified questions, timed practice and a one-hour quiz.</p>
+<form class="search" onsubmit="event.preventDefault();document.getElementById('subjects').scrollIntoView()">
+<label for="q" class="sr">Search by subject name or code</label>
+<input id="q" type="search" placeholder="Search a subject or code, e.g. Physics or 0625">
+<button class="btn btn-gold" type="submit">Find papers</button>
+</form>
+<div class="chips">
+<a class="btn btn-terra" style="border-radius:999px" href="quiz.html">Take the 50-question quiz · 1 hour</a>
+<a class="chip" href="papers.html">Mathematics 0580</a>
+<a class="chip" href="classified.html">Classified by topic</a>
+</div>
+</div>
+</section>
+
+<section class="wrap" style="padding-top:56px">
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+<div class="card"><div style="font-size:14px;font-weight:800;color:var(--gold-text)">Main series in Egypt</div><div style="font-size:22px;font-weight:800;color:var(--nile)">May / June</div><p style="margin:4px 0 0;color:var(--muted)">The biggest exam series for Egyptian schools. Start full papers at least 8 weeks before.</p></div>
+<div class="card"><div style="font-size:14px;font-weight:800;color:var(--gold-text)">Second chance</div><div style="font-size:22px;font-weight:800;color:var(--nile)">October / November</div><p style="margin:4px 0 0;color:var(--muted)">For resits and improving grades. Every Oct/Nov paper is listed with its mark scheme.</p></div>
+<div class="card"><div style="font-size:14px;font-weight:800;color:var(--gold-text)">Arabic subjects</div><div style="font-size:22px;font-weight:800;color:var(--nile)">0508 &amp; 0544</div><p style="margin:4px 0 0;color:var(--muted)">Arabic First Language and Arabic as a Foreign Language.</p></div>
+</div>
+</section>
+
+<section id="subjects" class="wrap section">
+<div class="row-head">
+<div><h2 class="h2">Choose your subject <span lang="ar" dir="rtl" style="font-size:24px;color:var(--gold-text)">· اختر المادة</span></h2><p class="sub" id="count"></p></div>
+<div class="chips" role="group" aria-label="Subject group" id="groups"></div>
+</div>
+<div class="grid" id="subject-grid"></div>
+<p class="empty" id="no-subject" hidden>No subject matches that search. Try the syllabus code from your statement of entry.</p>
+</section>
+
+<section class="wrap" style="padding-bottom:72px">
+<h2 class="h2" style="margin-bottom:28px">Built for how you actually revise</h2>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">
+<a class="card feature" href="papers.html"><h3>Past papers + mark schemes</h3><p>Filter by year, session, paper and variant. Every paper opens straight as a PDF.</p></a>
+<a class="card feature" href="classified.html"><h3>Classified by topic <span lang="ar" dir="rtl" style="font-size:16px;color:var(--gold-text)">مبوب</span></h3><p>Drill one chapter at a time, in Core or Extended.</p></a>
+<a class="card feature" href="practice.html"><h3>Timed practice mode</h3><p>Sit a full paper under exam timing, then unlock the mark scheme and log your score.</p></a>
+<a class="card feature dark" href="quiz.html"><h3>50-question quiz · 1 hour</h3><p>Auto-marked Mathematics questions with full answer review.</p></a>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap section">
+<h2 class="h2" style="margin-bottom:32px">How to get the most from past papers</h2>
+<ol class="steps">
+<li><div class="n">1</div><h3>Start with recent years</h3><p>Recent papers match the current syllabus most closely.</p></li>
+<li><div class="n">2</div><h3>Use exam conditions</h3><p>Timer on, phone away, only the equipment allowed in the hall.</p></li>
+<li><div class="n">3</div><h3>Mark strictly</h3><p>Follow the mark scheme word for word and read the examiner report.</p></li>
+<li><div class="n">4</div><h3>Fix the gaps</h3><p>Note lost marks by topic, drill them with classified papers, then retry.</p></li>
+</ol>
+</div>
+</section>
+
+<footer id="site-foot"></footer>
+<script src="common.js"></script>
+<script>
+var SUBJECTS = [
+  ['0580','Mathematics','الرياضيات','Maths'],['0606','Additional Mathematics','رياضيات إضافية','Maths'],
+  ['0625','Physics','الفيزياء','Sciences'],['0620','Chemistry','الكيمياء','Sciences'],['0610','Biology','الأحياء','Sciences'],
+  ['0478','Computer Science','علوم الحاسب','Sciences'],['0417','ICT','تكنولوجيا المعلومات','Sciences'],
+  ['0508','Arabic — First Language','اللغة العربية لغة أولى','Languages'],['0544','Arabic — Foreign Language','اللغة العربية لغة أجنبية','Languages'],
+  ['0500','English — First Language','اللغة الإنجليزية لغة أولى','Languages'],['0510','English as a Second Language','الإنجليزية لغة ثانية','Languages'],
+  ['0455','Economics','الاقتصاد','Humanities'],['0450','Business Studies','إدارة الأعمال','Humanities'],
+  ['0452','Accounting','المحاسبة','Humanities'],['0460','Geography','الجغرافيا','Humanities'],['0470','History','التاريخ','Humanities']
+];
+var group = 'All';
+var input = document.getElementById('q');
+function render() {
+  var q = input.value.trim().toLowerCase();
+  var list = SUBJECTS.filter(function (s) {
+    return (group === 'All' || s[3] === group) && (!q || s[1].toLowerCase().indexOf(q) > -1 || s[0].indexOf(q) > -1 || s[2].indexOf(input.value.trim()) > -1);
+  });
+  document.getElementById('subject-grid').innerHTML = list.map(function (s) {
+    var href = s[0] === '0580' ? 'papers.html' : 'papers.html?soon=' + s[0];
+    return '<a class="card subject" href="' + href + '"><span class="code">' + s[0] + '</span><span class="name">' + s[1] +
+      '</span><span lang="ar" dir="rtl" style="color:#6B5636;text-align:left">' + s[2] + '</span><span class="more">View past papers</span></a>';
+  }).join('');
+  document.getElementById('no-subject').hidden = list.length > 0;
+  document.getElementById('count').textContent = list.length + ' Cambridge IGCSE subjects popular in Egyptian schools';
+  document.getElementById('groups').innerHTML = ['All','Maths','Sciences','Languages','Humanities'].map(function (g) {
+    return '<button type="button" class="pill" aria-pressed="' + (g === group) + '" data-g="' + g + '">' + g + '</button>';
+  }).join('');
+}
+document.getElementById('groups').addEventListener('click', function (e) {
+  var g = e.target.getAttribute('data-g'); if (g) { group = g; render(); }
+});
+input.addEventListener('input', render);
+render();
+</script>
+</body>
+</html>

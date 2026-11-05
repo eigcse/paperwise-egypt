@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>50-question Mathematics quiz — Paperwise Egypt</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 34'%3E%3Cpath d='M20 3 L37 31 H3 Z' fill='%23D4A63A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="quiz">
+<header id="site-head"></header>
+
+<section id="intro" class="wrap" style="max-width:820px;padding-top:64px;padding-bottom:72px;display:flex;flex-direction:column;gap:22px">
+<p class="kicker" style="color:var(--gold-text)">Mathematics 0580 practice quiz</p>
+<h1 style="margin:0;font-size:clamp(34px,5vw,54px);font-weight:900;line-height:1.1;color:var(--nile)">50 questions. One hour. Can you beat the clock?</h1>
+<p lang="ar" dir="rtl" style="margin:0;font-size:24px;font-weight:700;color:var(--gold-text);text-align:left">٥٠ سؤال في ساعة واحدة</p>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+<div class="card"><div style="font-size:30px;font-weight:900;color:var(--nile)">50</div>multiple-choice questions</div>
+<div class="card"><div style="font-size:30px;font-weight:900;color:var(--nile)">60 min</div>auto-submits at zero</div>
+<div class="card"><div style="font-size:30px;font-weight:900;color:var(--nile)">1 mark</div>each, no negative marking</div>
+</div>
+<ul style="margin:0;padding-left:20px;line-height:1.8">
+<li>Covers number, algebra, geometry, trigonometry, statistics and probability.</li>
+<li>Jump between questions and flag ones to come back to.</li>
+<li>Have a calculator, pen and paper ready.</li>
+</ul>
+<button class="btn btn-terra" id="start" style="align-self:flex-start;min-height:56px;font-size:18px;padding:0 32px">Start quiz</button>
+</section>
+
+<div id="quiz" class="wrap split" hidden>
+<main class="main">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+<span id="meta" style="color:var(--muted)"></span>
+<div class="timer" id="timer">60:00</div>
+</div>
+<div class="bar"><div id="prog"></div></div>
+<section class="card" style="padding:32px;display:flex;flex-direction:column;gap:20px">
+<h2 id="qtext" style="margin:0;font-size:24px;font-weight:800;color:var(--nile)"></h2>
+<div role="radiogroup" aria-labelledby="qtext" id="opts" class="stack" style="gap:10px"></div>
+</section>
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px">
+<button class="btn btn-ghost" id="prev">Previous</button>
+<button class="btn btn-ghost" id="flag" style="border-color:var(--gold);color:#6B3F00">Flag for review</button>
+<button class="btn btn-nile" id="next">Next</button>
+</div>
+</main>
+<aside class="side card" aria-label="Question navigator" style="display:flex;flex-direction:column;gap:16px">
+<h2 style="margin:0;font-size:17px">Questions</h2>
+<div class="navgrid" id="navgrid"></div>
+<p style="margin:0;font-size:13px;color:var(--muted)">Dark = answered, gold = flagged, white = not answered.</p>
+<button class="btn btn-terra" id="submit">Submit quiz</button>
+</aside>
+</div>
+
+<section id="result" class="wrap" style="max-width:960px;padding-top:48px;padding-bottom:72px;flex-direction:column;gap:20px" hidden>
+<div style="background:var(--nile);color:#fff;border-radius:20px;padding:36px;display:flex;flex-wrap:wrap;align-items:center;gap:32px">
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:160px;height:160px;border-radius:50%;border:8px solid var(--gold)">
+<span id="score" style="font-size:44px;font-weight:900;line-height:1"></span><span style="color:var(--sky)">out of 50</span></div>
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:8px">
+<p id="tnote" style="margin:0;font-weight:800;color:var(--gold)"></p>
+<h2 id="verdict" style="margin:0;font-size:34px;font-weight:900"></h2>
+<p id="rmeta" style="margin:0;color:var(--sky)"></p>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px"><button class="btn btn-gold" id="again">Try again</button><a class="btn" href="classified.html" style="border:1px solid #4F7394;color:#fff">Drill weak topics</a></div>
+</div></div>
+<h2 class="h2" style="font-size:26px;margin-top:24px">Review your answers</h2>
+<div id="review" class="stack" style="gap:10px"></div>
+</section>
+
+<footer id="site-foot"></footer>
+<script src="common.js"></script>
+<script src="questions.js"></script>
+<script>
+var Q = QUESTIONS, L = ['A','B','C','D'];
+var idx = 0, answers = {}, flags = {}, left = 3600, timer = null;
+var $ = function (id) { return document.getElementById(id); };
+function show(screen) { ['intro','quiz','result'].forEach(function (s) { $(s).hidden = s !== screen; }); if (screen === 'result') $('result').style.display = 'flex'; else $('result').style.display = ''; window.scrollTo(0, 0); }
+function fmt(t) { return pad(Math.floor(t / 60)) + ':' + pad(t % 60); }
+function start() {
+  idx = 0; answers = {}; flags = {}; left = 3600; show('quiz'); draw();
+  clearInterval(timer);
+  timer = setInterval(function () { left--; $('timer').textContent = fmt(left); $('timer').classList.toggle('low', left <= 300); if (left <= 0) finish(true); }, 1000);
+}
+function draw() {
+  var q = Q[idx], n = Object.keys(answers).length;
+  $('timer').textContent = fmt(left);
+  $('meta').textContent = 'Question ' + (idx + 1) + ' of 50, ' + q[0] + '. ' + n + ' answered';
+  $('prog').style.width = (n / Q.length * 100) + '%';
+  $('qtext').textContent = q[1];
+  $('opts').innerHTML = q[2].map(function (o, i) {
+    return '<button type="button" role="radio" class="answer" aria-checked="' + (answers[idx] === i) + '" data-i="' + i + '"><span class="letter">' + L[i] + '</span><span>' + o + '</span></button>';
+  }).join('');
+  $('flag').textContent = flags[idx] ? 'Flagged ✓' : 'Flag for review';
+  $('flag').setAttribute('aria-pressed', !!flags[idx]);
+  $('next').textContent = idx === Q.length - 1 ? 'Finish and submit' : 'Next';
+  $('navgrid').innerHTML = Q.map(function (x, i) {
+    var c = (flags[i] ? 'flag' : answers[i] !== undefined ? 'done' : '') + (i === idx ? ' cur' : '');
+    return '<button type="button" class="' + c + '" data-i="' + i + '" aria-label="Question ' + (i + 1) + (answers[i] !== undefined ? ', answered' : '') + (flags[i] ? ', flagged' : '') + '">' + (i + 1) + '</button>';
+  }).join('');
+}
+function finish(timedOut) {
+  clearInterval(timer);
+  var score = Q.reduce(function (s, x, i) { return s + (answers[i] === x[3] ? 1 : 0); }, 0), pct = Math.round(score / 50 * 100);
+  $('score').textContent = score;
+  $('tnote').textContent = timedOut ? 'Time’s up, auto-submitted' : 'Quiz submitted';
+  $('verdict').textContent = pct >= 80 ? 'Excellent — ممتاز!' : pct >= 60 ? 'Good work, keep going' : pct >= 40 ? 'Getting there, review below' : 'Time to revise these topics';
+  $('rmeta').textContent = pct + '%, time used ' + fmt(3600 - Math.max(0, left));
+  $('review').innerHTML = Q.map(function (x, i) {
+    var a = answers[i], ok = a === x[3], blank = a === undefined;
+    return '<div class="card" style="padding:16px 18px;display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><strong>Q' + (i + 1) + ', ' + x[0] + '</strong><span class="tag ' + (ok ? 'ok' : blank ? 'skip' : 'bad') + '">' + (ok ? 'Correct' : blank ? 'Skipped' : 'Wrong') + '</span></div>' +
+      '<p style="margin:0">' + x[1] + '</p><p style="margin:0;font-size:14px">Your answer: <strong>' + (blank ? 'Not answered' : L[a] + '. ' + x[2][a]) + '</strong>. Correct: <strong style="color:#1F5F3A">' + L[x[3]] + '. ' + x[2][x[3]] + '</strong></p></div>';
+  }).join('');
+  show('result');
+}
+$('start').onclick = start; $('again').onclick = start;
+$('opts').onclick = function (e) { var b = e.target.closest('[data-i]'); if (b) { answers[idx] = +b.getAttribute('data-i'); draw(); } };
+$('navgrid').onclick = function (e) { var b = e.target.closest('[data-i]'); if (b) { idx = +b.getAttribute('data-i'); draw(); } };
+$('prev').onclick = function () { if (idx > 0) { idx--; draw(); } };
+$('next').onclick = function () { if (idx === Q.length - 1) { if (confirm('Submit your quiz now?')) finish(false); } else { idx++; draw(); } };
+$('flag').onclick = function () { flags[idx] = !flags[idx]; draw(); };
+$('submit').onclick = function () { if (confirm('Submit your quiz now?')) finish(false); };
+</script>
+</body>
+</html>
