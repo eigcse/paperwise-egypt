@@ -12,3 +12,4 @@ A free IGCSE past-papers website: past papers, classified questions, timed pract
 Open `common.js` and change the two lines at the top:
 - `PDF_BASE` — where the past-paper PDFs come from.
 - `CLASSIFIED_BASE` — where your classified booklets are (the `classified/` folder by default).
+Live site: https://epicgamescomm.github.io/paperwise-egypt/
